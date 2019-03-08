@@ -79,7 +79,7 @@ jobs:
           command: docker build \
             --build-arg COMMIT_REF=${CIRCLE_SHA1} \
             --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ` \
-            -t gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1} ./Service1
+            --tag gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1} ./Service1
 
       - run:
           name: Push Service1 image to GCR
