@@ -70,7 +70,7 @@ jobs:
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
-            gcloud --quiet config set clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
 
       # Create separate docker environment for app.
       - setup_remote_docker
