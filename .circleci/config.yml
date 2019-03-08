@@ -91,7 +91,7 @@ jobs:
       - run:
           name: Deploy to GKE
           command: |
-            envsubst < ${HOME}/project/kubernetes.template.yaml > ${HOME}/kubernetes.yaml
+            envsubst < ${HOME}/kubernetes.template.yaml > ${HOME}/kubernetes.yaml
             kubectl apply -f ${HOME}/kubernetes.template.yaml
             kubectl rollout status deployment/${PROJECT_NAME}
 
