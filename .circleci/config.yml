@@ -66,11 +66,10 @@ jobs:
       - run:
           name: Setup Google Cloud SDK
           command: |
-            apt-get install 
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
-            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME} --region ${GOOGLE_COMPUTE_REGION}
 
       # Create separate docker environment for app.
       - setup_remote_docker
