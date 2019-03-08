@@ -92,7 +92,7 @@ jobs:
           name: Deploy to GKE
           command: |
             envsubst < ${HOME}/kubernetes.template.yaml > ${HOME}/kubernetes.yaml
-            kubectl apply -f ${HOME}/kubernetes.template.yaml
+            kubectl apply -f ${HOME}/kubernetes.yaml
             kubectl rollout status deployment/${PROJECT_NAME}
 
 workflows:
