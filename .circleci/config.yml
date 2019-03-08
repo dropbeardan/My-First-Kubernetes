@@ -1,0 +1,57 @@
+version: 2.1
+
+jobs:
+  checkout_project:
+    working_directory: ~/app-name
+    docker:
+      - image: circleci/node:11
+    steps:
+      - checkout
+
+      # Cache Artifact.
+      - save_cache:
+          key: checkout_project-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/app-name
+
+  test_service1:
+    working_directory: ~/app-name
+    docker:
+      - image: circleci/node:11
+    steps:
+      # Continue from checkout_project job.
+      - restore_cache:
+          keys:
+            - checkout_project-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          keys:
+            - test_service1-node-modules-{{ checksum "Service1/yarn.lock" }}
+
+      - run:
+          name: Install Dependencies
+          command: cd Service1 && yarn install
+
+      - save_cache:
+          key: test_service1-node-modules-{{ checksum "Service1/yarn.lock" }}
+          paths:
+            - Service1/node_modules
+
+      - run:
+          name: Run Test
+          command: cd Service1 && yarn test
+
+      # Cache Artifact.
+      - save_cache:
+          key: test_service1-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/app-name
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - checkout_project
+      - test_service1:
+          requires:
+            - checkout_project
