@@ -1,3 +1,4 @@
+# Based on https://medium.com/@admm/ci-cd-using-circleci-and-google-kubernetes-engine-gke-7ed3a5ad57e
 version: 2.1
 
 jobs:
@@ -47,6 +48,53 @@ jobs:
           paths:
             - ~/app-name
 
+  deploy_service1:
+    docker:
+      - image: google/cloud-sdk
+    environment:
+      - PROJECT_NAME: 'my-first-kube'
+      - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
+      - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
+      - GOOGLE_CLUSTER_NAME: 'my-first-kube-cluster1'
+    steps:
+      - checkout
+
+      - run:
+          name: Install gettext for string templating commands
+          command: apt-get install -qq -y gettext
+
+      - run:
+          name: Setup Google Cloud SDK
+          command: |
+            apt-get install 
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
+            gcloud --quiet config set clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+
+      # Create separate docker environment for app.
+      - setup_remote_docker
+
+      - run:
+          name: Docker build Service1 image
+          command: docker build \
+            --build-arg COMMIT_REF=${CIRCLE_SHA1} \
+            --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ` \
+            -t gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1} ./Service1
+
+      - run:
+          name: Push Service1 image to GCR
+          command: |
+            gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+            docker push gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1}
+
+      - run:
+          name: Deploy to GKE
+          command: |
+            envsubst < ${HOME}/project/kubernetes.template.yaml > ${HOME}/kubernetes.yaml
+            kubectl apply -f ${HOME}/kubernetes.template.yaml
+            kubectl rollout status deployment/${PROJECT_NAME}
+
 workflows:
   version: 2
   build_test_deploy:
@@ -55,3 +103,9 @@ workflows:
       - test_service1:
           requires:
             - checkout_project
+      - deploy_service1:
+          requires:
+            - test_service1
+          filters:
+            branches:
+              only: master
