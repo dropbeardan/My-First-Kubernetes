@@ -26,7 +26,7 @@ spec:
     metadata:
       labels:
         app: ${PROJECT_NAME}
-    specs:
+    spec:
       containers:
         - name: ${PROJECT_NAME}
           image: gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1}
