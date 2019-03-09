@@ -88,7 +88,7 @@ jobs:
       - SERVICE_NAME: 'service1'
       - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
       - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
-      - GOOGLE_CLUSTER_NAME: 'service2-cluster'
+      - GOOGLE_CLUSTER_NAME: 'service1-cluster'
     steps:
       - checkout
 
