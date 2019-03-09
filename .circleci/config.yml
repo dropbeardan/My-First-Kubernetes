@@ -85,7 +85,7 @@ jobs:
     docker:
       - image: google/cloud-sdk
     environment:
-      - SERVICE_NAME: 'my-first-kube/service1'
+      - SERVICE_NAME: 'service1'
       - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
       - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
       - GOOGLE_CLUSTER_NAME: 'service2-cluster'
@@ -132,7 +132,7 @@ jobs:
     docker:
       - image: google/cloud-sdk
     environment:
-      - PROJECT_NAME: 'my-first-kube/service2'
+      - PROJECT_NAME: 'service2'
       - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
       - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
       - GOOGLE_CLUSTER_NAME: 'service2-cluster'
@@ -160,20 +160,20 @@ jobs:
             docker build \
               --build-arg COMMIT_REF=${CIRCLE_SHA1} \
               --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ` \
-              --tag gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}/Service2:${CIRCLE_SHA1} ./Service2
+              --tag gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1} ./Service2
 
       - run:
           name: Push Service2 image to GCR
           command: |
             gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
-            docker push gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}/Service2:${CIRCLE_SHA1}
+            docker push gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
 
       - run:
           name: Deploy to GKE
           command: |
             envsubst < kubernetes/service2.template.yaml > kubernetes/service2.yaml
             kubectl apply -f kubernetes/service2.yaml
-            kubectl rollout status deployment/${PROJECT_NAME}/Service2
+            kubectl rollout status deployment/${SERVICE_NAME}
 
 workflows:
   version: 2
