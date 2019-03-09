@@ -3,12 +3,14 @@ FROM node:11-alpine
 ARG COMMIT_REF
 ARG BUILD_DATE
 
+RUN apk add yarn
+
 WORKDIR /usr/app
 
 COPY package.json .
 COPY yarn.lock .
 
-RUN npm install --production --quiet
+RUN yarn install --production --silent
 
 COPY src ./src
 
@@ -17,4 +19,4 @@ ENV APP_COMMIT_REF=${COMMIT_REF} \
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
