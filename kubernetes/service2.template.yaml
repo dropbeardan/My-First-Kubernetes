@@ -34,5 +34,12 @@ spec:
             - name: http
               containerPort: 8080 # 3
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              initialDelaySeconds: 15
+              timeoutSeconds: 1
+              periodSeconds: 30
   strategy:
     type: RollingUpdate # Already default
