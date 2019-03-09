@@ -1,5 +1,5 @@
 {
-	"name": "service-1",
+	"name": "service-2",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -10,7 +10,6 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"axios": "^0.18.0",
 		"body-parser": "^1.18.3",
 		"cors": "^2.8.5",
 		"express": "^4.16.4"

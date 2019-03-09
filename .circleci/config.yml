@@ -48,14 +48,47 @@ jobs:
           paths:
             - ~/app-name
 
-  deploy_service1:
+   test_service2:
+    working_directory: ~/app-name
+    docker:
+      - image: circleci/node:11
+    steps:
+      # Continue from checkout_project job.
+      - restore_cache:
+          keys:
+            - checkout_project-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          keys:
+            - test_service2-node-modules-{{ checksum "Service2/yarn.lock" }}
+
+      - run:
+          name: Install Dependencies
+          command: cd Service2 && yarn install
+
+      - save_cache:
+          key: test_service2-node-modules-{{ checksum "Service2/yarn.lock" }}
+          paths:
+            - Service2/node_modules
+
+      - run:
+          name: Run Test
+          command: cd Service2 && yarn test
+
+      # Cache Artifact.
+      - save_cache:
+          key: test_service2-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/app-name
+
+  update_service1_image:
     docker:
       - image: google/cloud-sdk
     environment:
-      - PROJECT_NAME: 'my-first-kube'
+      - SERVICE_NAME: 'my-first-kube/service1'
       - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
       - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
-      - GOOGLE_CLUSTER_NAME: 'my-first-kube-cluster1'
+      - GOOGLE_CLUSTER_NAME: 'service2-cluster'
     steps:
       - checkout
 
@@ -80,20 +113,67 @@ jobs:
             docker build \
               --build-arg COMMIT_REF=${CIRCLE_SHA1} \
               --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ` \
-              --tag gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1} ./Service1
+              --tag gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1} ./Service1
 
       - run:
           name: Push Service1 image to GCR
           command: |
             gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
-            docker push gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1}
+            docker push gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
 
       - run:
           name: Deploy to GKE
           command: |
-            envsubst < kubernetes.template.yaml > kubernetes.yaml
-            kubectl apply -f kubernetes.yaml
-            kubectl rollout status deployment/${PROJECT_NAME}
+            envsubst < kubernetes/service1.template.yaml > kubernetes/service1.yaml
+            kubectl apply -f kubernetes/service1.yaml
+            kubectl rollout status deployment/${SERVICE_NAME}
+
+  update_service2_image:
+    docker:
+      - image: google/cloud-sdk
+    environment:
+      - PROJECT_NAME: 'my-first-kube/service2'
+      - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
+      - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
+      - GOOGLE_CLUSTER_NAME: 'service2-cluster'
+    steps:
+      - checkout
+
+      - run:
+          name: Install gettext for string templating commands
+          command: apt-get install -qq -y gettext
+
+      - run:
+          name: Setup Google Cloud SDK
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME} --region ${GOOGLE_COMPUTE_REGION}
+
+      # Create separate docker environment for app.
+      - setup_remote_docker
+
+      - run:
+          name: Docker build Service2 image
+          command: |
+            docker build \
+              --build-arg COMMIT_REF=${CIRCLE_SHA1} \
+              --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ` \
+              --tag gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}/Service2:${CIRCLE_SHA1} ./Service2
+
+      - run:
+          name: Push Service2 image to GCR
+          command: |
+            gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+            docker push gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}/Service2:${CIRCLE_SHA1}
+
+      - run:
+          name: Deploy to GKE
+          command: |
+            envsubst < kubernetes/service2.template.yaml > kubernetes/service2.yaml
+            kubectl apply -f kubernetes/service2.yaml
+            kubectl rollout status deployment/${PROJECT_NAME}/Service2
 
 workflows:
   version: 2
@@ -103,9 +183,25 @@ workflows:
       - test_service1:
           requires:
             - checkout_project
-      - deploy_service1:
+      - test_service2:
+          requires:
+            - checkout_project
+      - update_service1_image:
           requires:
             - test_service1
+          filters:
+            branches:
+              only: master
+      - update_service2_image:
+          requires:
+            - test_service2
+          filters:
+            branches:
+              only: master
+      - update_kubernetes_configs:
+          requires:
+            - test_service1
+            - test_service2
           filters:
             branches:
               only: master
