@@ -19,11 +19,11 @@ const connection = new sequelize(
 	}
 );
 
-const Service1 = sequelize.define('Service1', {
+const Service1 = connection.define('Service1', {
 	name: { type: sequelize.STRING, allowNull: false }
 });
 
-const Service2 = sequelize.define('Service2', {
+const Service2 = connection.define('Service2', {
 	name: { type: sequelize.STRING, allowNull: false }
 });
 
