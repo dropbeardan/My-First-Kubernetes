@@ -4,11 +4,11 @@ metadata:
   name: ${PROJECT_NAME}
 spec:
   selector:
-    app: ${PROJECT_NAME}
+    app: ${PROJECT_NAME} # Targets 1
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 8080 # Targets 3
   type: LoadBalancer
 ---
 kind: Deployment
@@ -21,16 +21,18 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ${PROJECT_NAME}
+      app: ${PROJECT_NAME} # Targets 1
   template:
     metadata:
       labels:
-        app: ${PROJECT_NAME}
+        app: ${PROJECT_NAME} # 1
     spec:
       containers:
         - name: ${PROJECT_NAME}
           image: gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 8080 # 3
               protocol: TCP
+  strategy:
+    type: RollingUpdate # Already default
