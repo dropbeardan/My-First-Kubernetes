@@ -2,14 +2,33 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
+const sequelize = require('sequelize');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const commitRef = process.env.APP_COMMIT_REF || 'N/A';
-const buildDate = process.env.APP_BUILD_DATE || new Date().toISOString();
+const connection = new sequelize(
+	process.env.DB_NAME,
+	process.env.DB_USERNAME,
+	process.env.DB_PASSWORD,
+	{
+		dialect: 'postgres',
+		host: '127.0.0.1',
+		port: 5432
+	}
+);
+
+const Service1 = sequelize.define('Service1', {
+	name: { type: sequelize.STRING, allowNull: false }
+});
+
+const Service2 = sequelize.define('Service2', {
+	name: { type: sequelize.STRING, allowNull: false }
+});
+
+connection.sync();
 
 app.get('/', (req, res) => {
 	res.json({
@@ -31,6 +50,26 @@ app.get('/service2', async (req, res) => {
 	});
 
 	res.send(response);
+});
+
+app.get('/data', async (req, res) => {
+	const service1data = await Service1.findAll({});
+	const service2data = await Service2.findAll({});
+
+	return Promise.all([service1data, service2data]).then(
+		(service1response, service2response) => {
+			res.json({
+				service1: service1response.map(response => response.dataValues),
+				service2: service2response.map(response => response.dataValues)
+			});
+		}
+	);
+});
+
+app.get('/createData', async (req, res) => {
+	await Service1.create({ name: 'Service1' });
+
+	res.send('DATA PRIMED!');
 });
 
 const PORT = process.env.port || 8080;
