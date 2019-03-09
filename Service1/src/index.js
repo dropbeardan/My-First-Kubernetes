@@ -24,7 +24,7 @@ const HOST = '35.189.1.114';
 app.get('/service2', async (req, res) => {
 	const { data: response } = await axios({
 		method: 'get',
-		url: `http://${HOST}:8081`
+		url: `http://${HOST}`
 	});
 
 	res.send(response);
