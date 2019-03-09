@@ -27,8 +27,8 @@ spec:
       labels:
         app: ${SERVICE_NAME} # 1
     spec:
-      volumes:
-        - name: secrets-volume # Can only use one of these bad bois
+      volumes: # Can only use one of these bad bois
+        - name: cloudsql-secrets # 3
           secret:
             secretName: cloudsql-instance-credentials
       containers:
@@ -70,7 +70,7 @@ spec:
               '-credential_file=/secrets/cloudsql/cloudsql.json',
             ]
           volumeMounts:
-            - name: cloudsql-instance-credentials
+            - name: secrets-volume # Targets #3
               mountPath: /secrets/cloudsql
               readOnly: true
   strategy:

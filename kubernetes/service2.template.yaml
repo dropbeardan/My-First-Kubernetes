@@ -27,8 +27,8 @@ spec:
       labels:
         app: ${SERVICE_NAME} # 1
     spec:
-      volumes:
-        - name: secrets-volume # Can only use one of these bad bois
+      volumes: # Can only use one of these bad bois
+        - name: cloudsql-secrets # 3
           secret:
             secretName: cloudsql-instance-credentials
       containers:
@@ -52,7 +52,7 @@ spec:
                   key: password
           ports:
             - name: http
-              containerPort: 8080 # 3
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -61,7 +61,7 @@ spec:
             initialDelaySeconds: 15
             timeoutSeconds: 1
             periodSeconds: 30
-            - name: cloudsql-proxy
+        - name: cloudsql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy
           command:
             [
@@ -70,7 +70,7 @@ spec:
               '-credential_file=/secrets/cloudsql/cloudsql.json',
             ]
           volumeMounts:
-            - name: cloudsql-instance-credentials
+            - name: cloudsql-secrets
               mountPath: /secrets/cloudsql
               readOnly: true
   strategy:
