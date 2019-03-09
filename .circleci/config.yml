@@ -81,7 +81,7 @@ jobs:
           paths:
             - ~/app-name
 
-  update_service1_image:
+  deploy_service1_image:
     docker:
       - image: google/cloud-sdk
     environment:
@@ -128,7 +128,7 @@ jobs:
             kubectl apply -f kubernetes/service1.yaml
             kubectl rollout status deployment/${SERVICE_NAME}
 
-  update_service2_image:
+  deploy_service2_image:
     docker:
       - image: google/cloud-sdk
     environment:
@@ -186,21 +186,14 @@ workflows:
       - test_service2:
           requires:
             - checkout_project
-      - update_service1_image:
+      - deploy_service1_image:
           requires:
             - test_service1
           filters:
             branches:
               only: master
-      - update_service2_image:
+      - deploy_service2_image:
           requires:
-            - test_service2
-          filters:
-            branches:
-              only: master
-      - update_kubernetes_configs:
-          requires:
-            - test_service1
             - test_service2
           filters:
             branches:
