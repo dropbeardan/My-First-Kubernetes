@@ -70,7 +70,7 @@ spec:
               '-credential_file=/secrets/cloudsql/cloudsql.json',
             ]
           volumeMounts:
-            - name: secrets-volume # Targets #3
+            - name: cloudsql-secrets # Targets #3
               mountPath: /secrets/cloudsql
               readOnly: true
   strategy:
