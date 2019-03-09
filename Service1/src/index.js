@@ -12,11 +12,14 @@ const commitRef = process.env.APP_COMMIT_REF || 'N/A';
 const buildDate = process.env.APP_BUILD_DATE || new Date().toISOString();
 
 app.get('/', (req, res) => {
-	res.send(
-		`You have landed on Service 1.\n
-		Commit: ${commitRef}\n
-		Build Date: ${buildDate}`
-	);
+	res.json({
+		Service: 'Service 1',
+		COMMIT_REF: process.env.APP_COMMIT_REF,
+		BUILD_DATE: process.env.APP_BUILD_DATE,
+		DB_NAME: process.env.DB_NAME,
+		DB_USERNAME: process.env.DB_USERNAME,
+		DB_PASSWORD: process.env.DB_PASSWORD
+	});
 });
 
 const HOST = 'http://35.189.3.100/';
