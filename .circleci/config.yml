@@ -132,7 +132,7 @@ jobs:
     docker:
       - image: google/cloud-sdk
     environment:
-      - PROJECT_NAME: 'service2'
+      - SERVICE_NAME: 'service2'
       - GOOGLE_PROJECT_ID: 'my-first-kube-233907'
       - GOOGLE_COMPUTE_REGION: 'australia-southeast1'
       - GOOGLE_CLUSTER_NAME: 'service2-cluster'
