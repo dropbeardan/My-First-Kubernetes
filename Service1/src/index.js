@@ -19,12 +19,12 @@ app.get('/', (req, res) => {
 	);
 });
 
-const HOST = '35.189.1.114';
+const HOST = 'http://35.189.3.100/';
 
 app.get('/service2', async (req, res) => {
 	const { data: response } = await axios({
 		method: 'get',
-		url: `http://${HOST}`
+		url: HOST
 	});
 
 	res.send(response);
