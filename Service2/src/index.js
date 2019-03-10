@@ -44,21 +44,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/data', async (req, res) => {
-	const service1data = await Service1.findAll({});
-	const service2data = await Service2.findAll({});
+	try {
+		const service1data = await Service1.findAll({});
+		const service2data = await Service2.findAll({});
 
-	return Promise.all([service1data, service2data]).then(
-		(service1response, service2response) => {
-			res.json({
-				service1: service1response.map(response => response.dataValues),
-				service2: service2response.map(response => response.dataValues)
-			});
-		}
-	);
+		return Promise.all([service1data, service2data]).then(
+			(service1response, service2response) => {
+				res.json({
+					service1: service1response.map(response => response.dataValues),
+					service2: service2response.map(response => response.dataValues)
+				});
+			}
+		);
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 app.get('/createData', async (req, res) => {
-	await Service1.create({ name: 'Service1' });
+	await Service2.create({ name: 'Service2' });
 
 	res.send('DATA PRIMED!');
 });
