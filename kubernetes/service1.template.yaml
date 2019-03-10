@@ -76,7 +76,7 @@ spec:
             - name: cloudsql-secrets # Targets #3
               mountPath: /secrets/cloudsql
               readOnly: true
-        - name: ${SERVICE_NAME}_2
+        - name: ${SERVICE_NAME}2
           image: gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
           ports:
             - name: http
