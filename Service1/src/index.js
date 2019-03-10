@@ -72,7 +72,7 @@ app.get('/localhost', async (req, res) => {
 	try {
 		const { data: response } = await axios({
 			method: 'get',
-			url: 'localhost:8081'
+			url: 'http://localhost:8081'
 		});
 
 		res.send(response);
@@ -85,7 +85,7 @@ app.get('/loopback', async (req, res) => {
 	try {
 		const { data: response } = await axios({
 			method: 'get',
-			url: '127.0.0.1:8081'
+			url: 'http://127.0.0.1:8081'
 		});
 
 		res.send(response);
