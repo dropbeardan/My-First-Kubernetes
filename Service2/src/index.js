@@ -14,8 +14,7 @@ const connection = new sequelize(
 	process.env.DB_PASSWORD,
 	{
 		dialect: 'postgres',
-		host:
-			'/cloudsql/my-first-kube-233907:australia-southeast1:postgresql-test-1',
+		host: 'localhost',
 		port: 5432
 	}
 );
