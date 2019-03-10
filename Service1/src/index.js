@@ -45,12 +45,21 @@ app.get('/', (req, res) => {
 	});
 });
 
-const HOST = 'http://35.189.3.100/';
+app.get('/service1', async (req, res) => {
+	const { data: response } = await axios({
+		method: 'get',
+		url: 'http://localhost:8081'
+	});
+
+	res.send(response);
+});
+
+const service2HOST = 'http://35.189.3.100/';
 
 app.get('/service2', async (req, res) => {
 	const { data: response } = await axios({
 		method: 'get',
-		url: HOST
+		url: service2HOST
 	});
 
 	res.send(response);
