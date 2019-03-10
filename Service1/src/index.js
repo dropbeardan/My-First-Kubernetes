@@ -16,7 +16,11 @@ const connection = new sequelize(
 	{
 		dialect: 'postgres',
 		host: '127.0.0.1',
-		port: 5432
+		port: 5432,
+		dialectOptions: {
+			socketPath:
+				'/cloudsql/my-first-kube-233907:australia-southeast1:postgresql-test-1'
+		}
 	}
 );
 
