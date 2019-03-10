@@ -16,7 +16,11 @@ const connection = new sequelize(
 	{
 		dialect: 'postgres',
 		host: 'localhost',
-		port: 5432
+		port: 5432,
+		dialectOptions: {
+			socketPath:
+				'/cloudsql/my-first-kube-233907:australia-southeast1:postgresql-test-1'
+		}
 	}
 );
 
@@ -30,7 +34,7 @@ const Service1 = connection.define('Service1', {
 });
 
 connection
-	.sync({ force: true })
+	.sync()
 	.then(() => console.log('IT CONNECTED'))
 	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
 
@@ -52,7 +56,20 @@ app.get('/test', (req, res) => {
 		.catch(err => res.send(err));
 });
 
-app.get('/service1', async (req, res) => {
+app.get('/localhost', async (req, res) => {
+	try {
+		const { data: response } = await axios({
+			method: 'get',
+			url: 'localhost:8081'
+		});
+
+		res.send(response);
+	} catch (err) {
+		res.send(err);
+	}
+});
+
+app.get('/loopback', async (req, res) => {
 	try {
 		const { data: response } = await axios({
 			method: 'get',
