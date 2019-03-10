@@ -28,7 +28,10 @@ const Service2 = connection.define('Service2', {
 	name: { type: sequelize.STRING, allowNull: false }
 });
 
-connection.sync();
+connection
+	.sync()
+	.then(() => console.log('IT CONNECTED'))
+	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
 
 app.get('/', (req, res) => {
 	res.json({

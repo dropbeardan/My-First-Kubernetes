@@ -30,7 +30,7 @@ spec:
       volumes: # Can only use one of these bad bois
         - name: cloudsql-secrets # 3
           secret:
-            secretName: cloudsql-instance-credentials-2
+            secretName: cloudsql-instance-credentials-3
       containers:
         - name: ${SERVICE_NAME}
           image: gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
