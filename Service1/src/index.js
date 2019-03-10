@@ -46,12 +46,16 @@ app.get('/', (req, res) => {
 });
 
 app.get('/service1', async (req, res) => {
-	const { data: response } = await axios({
-		method: 'get',
-		url: 'http://localhost:8081'
-	});
+	try {
+		const { data: response } = await axios({
+			method: 'get',
+			url: 'http://localhost:8081'
+		});
 
-	res.send(response);
+		res.send(response);
+	} catch (err) {
+		res.send(err);
+	}
 });
 
 const service2HOST = 'http://35.189.3.100/';
