@@ -49,7 +49,7 @@ app.get('/service1', async (req, res) => {
 	try {
 		const { data: response } = await axios({
 			method: 'get',
-			url: 'http://localhost:8081'
+			url: '127.0.0.1:8081'
 		});
 
 		res.send(response);
