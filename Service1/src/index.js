@@ -30,7 +30,7 @@ const Service1 = connection.define('Service1', {
 });
 
 connection
-	.sync()
+	.sync({ force: true })
 	.then(() => console.log('IT CONNECTED'))
 	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
 
