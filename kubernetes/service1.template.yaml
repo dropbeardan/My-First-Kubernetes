@@ -78,6 +78,9 @@ spec:
               readOnly: true
         - name: ${SERVICE_NAME}2
           image: gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
+          env:
+            - name: PORT
+              value: 8081
           ports:
             - name: http
               containerPort: 8081
