@@ -84,23 +84,16 @@ app.get('/data', async (req, res) => {
 	} catch (err) {
 		res.send(err);
 	}
-
-	// const service2data = await Service2.findAll({});
-
-	// return Promise.all([service1data, service2data]).then(
-	// 	(service1response, service2response) => {
-	// 		res.json({
-	// 			service1: service1response.map(response => response.dataValues),
-	// 			service2: service2response.map(response => response.dataValues)
-	// 		});
-	// 	}
-	// );
 });
 
 app.get('/createData', async (req, res) => {
-	await Service1.create({ name: 'Service1' });
+	try {
+		await Service1.create({ name: 'Service1' });
 
-	res.send('DATA PRIMED!');
+		res.send('DATA PRIMED!');
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 const PORT = process.env.PORT || 8080;
