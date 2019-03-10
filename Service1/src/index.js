@@ -39,18 +39,6 @@ connection
 	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
 
 app.get('/', (req, res) => {
-	console.log(
-		{
-			Service: 'Service 1',
-			COMMIT_REF: process.env.APP_COMMIT_REF,
-			BUILD_DATE: process.env.APP_BUILD_DATE,
-			DB_NAME: process.env.DB_NAME,
-			DB_USERNAME: process.env.DB_USERNAME,
-			DB_PASSWORD: process.env.DB_PASSWORD
-		},
-		req.originalUrl
-	);
-
 	res.json({
 		Service: 'Service 1',
 		COMMIT_REF: process.env.APP_COMMIT_REF,
