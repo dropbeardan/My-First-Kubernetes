@@ -2,32 +2,31 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
-// const sequelize = require('sequelize');
+const sequelize = require('sequelize');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// const connection = new sequelize(
-// 	process.env.DB_NAME,
-// 	process.env.DB_USERNAME,
-// 	process.env.DB_PASSWORD,
-// 	{
-// 		dialect: 'postgres',
-// 		host:
-// 			'/cloudsql/my-first-kube-233907:australia-southeast1:postgresql-test-1',
-// 		port: 5432
-// 	}
-// );
+const connection = new sequelize(
+	process.env.DB_NAME,
+	process.env.DB_USERNAME,
+	process.env.DB_PASSWORD,
+	{
+		dialect: 'postgres',
+		host: 'localhost',
+		port: 5432
+	}
+);
 
-// const Service1 = connection.define('Service1', {
-// 	name: { type: sequelize.STRING, allowNull: false }
-// });
+const Service1 = connection.define('Service1', {
+	name: { type: sequelize.STRING, allowNull: false }
+});
 
-// const Service2 = connection.define('Service2', {
-// 	name: { type: sequelize.STRING, allowNull: false }
-// });
+const Service2 = connection.define('Service2', {
+	name: { type: sequelize.STRING, allowNull: false }
+});
 
 // connection
 // 	.sync()
@@ -43,6 +42,13 @@ app.get('/', (req, res) => {
 		DB_USERNAME: process.env.DB_USERNAME,
 		DB_PASSWORD: process.env.DB_PASSWORD
 	});
+});
+
+app.get('/test', (req, res) => {
+	connection
+		.authenticate()
+		.then(() => res.send('AUTHENTICATED'))
+		.catch(err => res.send(err));
 });
 
 app.get('/service1', async (req, res) => {
