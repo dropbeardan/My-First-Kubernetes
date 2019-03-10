@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "my-first-kube-233907",
+  "private_key_id": "59e528bd02c4280b17d2003c313e075544ebbad8",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDNKcdWADsAFEsl\nAd3mrBF7DYX7cH27Kdx4D2alPZiaZ3jt2Bch35KUV4vdofunRVzrpAb1i5lKS+K4\nzfDAHN9jWeCJByyzUsej44wgZP6e7n90fiM/Ot7Dg7P6wKD41UzRZnj6Izhh0da8\n5R4rt71vSaBQt7ytbSokfyEgBaG/hO7U2D2lfAWKpKO+tIkEBaR7IBAxTU6bjxzI\nj3kRRFJQ24Hb2V5JDZeuQNlUYW0YFzu6X6OAoLtvhCexTv0UsmPaCSNBdQiR6R3R\nQtdivFoiOBq2DMlbWfAa64P2ujLXDLk6kXahpg2Py517ktyPxV48TrO/OCHMPjU5\neOzURDj1AgMBAAECggEAAoLckUAUeMucIIUAKdF5BKK65+54Y4DqKsAJghlEaRNo\n0VnKmAa2smvLPE2+GPiKNXTUWaS5SMWwAzy7ZyaTUhHTY+n7ZpXV+BASHYK5nnQN\n3vz87R+z1/x13f+wmLXHqG0oKuuhG4q9evdqTJ+wSRCYzpQefO2aop1kaDzEE5Da\nhDrWOV/VvcfMI/+bFXpDABnGCtzRXWVaHMR54AbcpVtkfaIrfnruGtPaTYLkDKhn\nvfpz7gXYV3uMxDhGr2NHPTT+JAj15/0U8lwdLxxvhnTb42XQOxXh75gMpTHtHZZI\nYDvfTQzZy5R1oQoTvP6A9278wavhkhKdb5bsFCJgywKBgQD2R3T5kVyN0dHn42+6\n9UwTHjHwYfrWrh++GjlZeB0npeEGUDqRrYAY7+cbLu7eGCxmnqDd27f+WNzIx/oW\nrcwW4wgw0cXx6hutcMkky4k7YVA8oAvZ6xa6pKvKOJsJD3d66mtpgAym4UPJNclG\nOP0hmTs6vA2fQtlEe8wmM1yHWwKBgQDVQtz6SnapQe7KLSehgvCE9evl1+CEhLB4\ni8nRWxyiHUUaQP9nSY8d6Pf+EeseisF7rmEHVzff0qjH0i5DAV96f+RhOH6Loopj\nT5hSFi1wRiDvnBUozxAWTOzwm/OOJL/3WnD73pXjAdme7JOQkmIgQQJ/c2eZsFKj\n+gluXpeB7wKBgQCwY++hC/7JSJ1Zw6jzs9rf2oGUFOkOt7nec3Pd48yl6AXqeq3o\nRub3dWQGMTA+e/vZKAY5wLPghQ7k823ormP9hHAKX0SyBqX6LEy0gN7yW7mXIl46\nn0kxNt4fwTkxXRWLQLjb4C2vnKnrRA27sPeEB/bHE4eCKOPqS+yk86Zy/wKBgGRT\naz+4LjCcGukz6vP5dIsoYgyjzTSqc5aSNKRv132QhYS/VSfTHCf3BEubRF/+6Nz1\ngSIB7wA1yz8N6sOM7szjQ55VBHtOQQpNVJwxYLjz1OTEKdQj7S6Ai+r5gs+5DDIi\ncwqagSrlIOq54wXdR5pi2vj4YqGTqJ0JsMwiZeYzAoGAfFGd/q2CnmIqpL24JfF3\nxbXy8c96ZVmbwxkpCW/coJIK2D5uvRMQUoSYExNOUjHGkc8wO9sEb/llIFUW/LUJ\nnNa5SDQav+MRCa9E0UPVvbRk2Fmi+w/OYxRZ2RjPsDqcN2p7TN/M6siRBJuza5tH\nL85ckyql5am12l3cJZnpkhc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "cloudsql-admin@my-first-kube-233907.iam.gserviceaccount.com",
+  "client_id": "114638904297145745650",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cloudsql-admin%40my-first-kube-233907.iam.gserviceaccount.com"
+}
