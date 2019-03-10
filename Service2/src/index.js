@@ -68,9 +68,13 @@ app.get('/data', async (req, res) => {
 });
 
 app.get('/createData', async (req, res) => {
-	await Service2.create({ name: 'Service2' });
+	try {
+		await Service2.create({ name: 'Service2' });
 
-	res.send('DATA PRIMED!');
+		res.send('DATA PRIMED!');
+	} catch (err) {
+		res.send(err);
+	}
 });
 
 const PORT = process.env.port || 8080;
