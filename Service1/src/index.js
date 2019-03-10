@@ -2,32 +2,32 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
-const sequelize = require('sequelize');
+// const sequelize = require('sequelize');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const connection = new sequelize(
-	process.env.DB_NAME,
-	process.env.DB_USERNAME,
-	process.env.DB_PASSWORD,
-	{
-		dialect: 'postgres',
-		host:
-			'/cloudsql/my-first-kube-233907:australia-southeast1:postgresql-test-1',
-		port: 5432
-	}
-);
+// const connection = new sequelize(
+// 	process.env.DB_NAME,
+// 	process.env.DB_USERNAME,
+// 	process.env.DB_PASSWORD,
+// 	{
+// 		dialect: 'postgres',
+// 		host:
+// 			'/cloudsql/my-first-kube-233907:australia-southeast1:postgresql-test-1',
+// 		port: 5432
+// 	}
+// );
 
-const Service1 = connection.define('Service1', {
-	name: { type: sequelize.STRING, allowNull: false }
-});
+// const Service1 = connection.define('Service1', {
+// 	name: { type: sequelize.STRING, allowNull: false }
+// });
 
-const Service2 = connection.define('Service2', {
-	name: { type: sequelize.STRING, allowNull: false }
-});
+// const Service2 = connection.define('Service2', {
+// 	name: { type: sequelize.STRING, allowNull: false }
+// });
 
 connection
 	.sync()
@@ -69,25 +69,25 @@ app.get('/service2', async (req, res) => {
 	res.send(response);
 });
 
-app.get('/data', async (req, res) => {
-	const service1data = await Service1.findAll({});
-	const service2data = await Service2.findAll({});
+// app.get('/data', async (req, res) => {
+// 	const service1data = await Service1.findAll({});
+// 	const service2data = await Service2.findAll({});
 
-	return Promise.all([service1data, service2data]).then(
-		(service1response, service2response) => {
-			res.json({
-				service1: service1response.map(response => response.dataValues),
-				service2: service2response.map(response => response.dataValues)
-			});
-		}
-	);
-});
+// 	return Promise.all([service1data, service2data]).then(
+// 		(service1response, service2response) => {
+// 			res.json({
+// 				service1: service1response.map(response => response.dataValues),
+// 				service2: service2response.map(response => response.dataValues)
+// 			});
+// 		}
+// 	);
+// });
 
-app.get('/createData', async (req, res) => {
-	await Service1.create({ name: 'Service1' });
+// app.get('/createData', async (req, res) => {
+// 	await Service1.create({ name: 'Service1' });
 
-	res.send('DATA PRIMED!');
-});
+// 	res.send('DATA PRIMED!');
+// });
 
 const PORT = process.env.port || 8080;
 app.listen(PORT, () => {
