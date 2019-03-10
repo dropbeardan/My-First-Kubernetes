@@ -66,7 +66,7 @@ spec:
           command:
             [
               '/cloud_sql_proxy',
-              '-instances=postgresql-test-1=tcp:5432',
+              '-instances=my-first-kube-233907:australia-southeast1:postgresql-test-1=tcp:5432',
               '-credential_file=/secrets/cloudsql/cloudsql.json',
             ]
           volumeMounts:
