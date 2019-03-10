@@ -28,10 +28,10 @@ const Service2 = connection.define('Service2', {
 	name: { type: sequelize.STRING, allowNull: false }
 });
 
-// connection
-// 	.sync()
-// 	.then(() => console.log('IT CONNECTED'))
-// 	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
+connection
+	.sync()
+	.then(() => console.log('IT CONNECTED'))
+	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
 
 app.get('/', (req, res) => {
 	res.json({
@@ -75,25 +75,32 @@ app.get('/service2', async (req, res) => {
 	res.send(response);
 });
 
-// app.get('/data', async (req, res) => {
-// 	const service1data = await Service1.findAll({});
-// 	const service2data = await Service2.findAll({});
+app.get('/data', async (req, res) => {
+	try {
+		const service1data = await Service1.findAll({});
 
-// 	return Promise.all([service1data, service2data]).then(
-// 		(service1response, service2response) => {
-// 			res.json({
-// 				service1: service1response.map(response => response.dataValues),
-// 				service2: service2response.map(response => response.dataValues)
-// 			});
-// 		}
-// 	);
-// });
+		res.send(service1data.map(response => response.dataValues));
+	} catch (err) {
+		res.send(err);
+	}
 
-// app.get('/createData', async (req, res) => {
-// 	await Service1.create({ name: 'Service1' });
+	// const service2data = await Service2.findAll({});
 
-// 	res.send('DATA PRIMED!');
-// });
+	// return Promise.all([service1data, service2data]).then(
+	// 	(service1response, service2response) => {
+	// 		res.json({
+	// 			service1: service1response.map(response => response.dataValues),
+	// 			service2: service2response.map(response => response.dataValues)
+	// 		});
+	// 	}
+	// );
+});
+
+app.get('/createData', async (req, res) => {
+	await Service1.create({ name: 'Service1' });
+
+	res.send('DATA PRIMED!');
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
