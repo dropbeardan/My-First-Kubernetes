@@ -80,7 +80,7 @@ spec:
           image: gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
           env:
             - name: PORT
-
+              value: 8081
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
