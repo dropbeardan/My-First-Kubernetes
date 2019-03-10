@@ -29,10 +29,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 	name: { type: sequelize.STRING, allowNull: false }
 // });
 
-connection
-	.sync()
-	.then(() => console.log('IT CONNECTED'))
-	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
+// connection
+// 	.sync()
+// 	.then(() => console.log('IT CONNECTED'))
+// 	.catch(err => console.log('FAILED TO CONNECT TO SEQUELIZE', err));
 
 app.get('/', (req, res) => {
 	res.json({
