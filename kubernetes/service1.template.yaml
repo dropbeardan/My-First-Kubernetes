@@ -63,20 +63,20 @@ spec:
             initialDelaySeconds: 15
             timeoutSeconds: 1
             periodSeconds: 30
-        # - name: cloudsql-proxy
-        #   image: gcr.io/cloudsql-docker/gce-proxy
-        #   command:
-        #     [
-        #       '/cloud_sql_proxy',
-        #       '--dir=/cloudsql',
-        #       '-instances=my-first-kube-233907:australia-southeast1:postgresql-test-1=tcp:5432',
-        #       '-credential_file=/secrets/cloudsql/cloudsql.json',
-        #     ]
-        #   volumeMounts:
-        #     - name: cloudsql-secrets # Targets #3
-        #       mountPath: /secrets/cloudsql
-        #       readOnly: true
-        - name: ${SERVICE_NAME}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy
+          command:
+            [
+              '/cloud_sql_proxy',
+              '--dir=/cloudsql',
+              '-instances=my-first-kube-233907:australia-southeast1:postgresql-test-1=tcp:5432',
+              '-credential_file=/secrets/cloudsql/cloudsql.json',
+            ]
+          volumeMounts:
+            - name: cloudsql-secrets # Targets #3
+              mountPath: /secrets/cloudsql
+              readOnly: true
+        - name: ${SERVICE_NAME}_2
           image: gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}
           env:
             - name: port
