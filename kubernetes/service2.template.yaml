@@ -30,7 +30,7 @@ spec:
       volumes: # Can only use one of these bad bois
         - name: cloudsql-secrets # 3
           secret:
-            secretName: cloudsql-client
+            secretName: cloudsql-editor
         - name: cloudsql
           emptyDir:
       containers:
