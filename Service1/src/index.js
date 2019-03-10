@@ -21,10 +21,11 @@ const connection = new sequelize(
 );
 
 const Service1 = connection.define('Service1', {
-	name: { type: sequelize.STRING, allowNull: false }
-});
-
-const Service2 = connection.define('Service2', {
+	id: {
+		type: sequelize.UUID,
+		defaultValue: sequelize.UUIDV4,
+		primaryKey: true
+	},
 	name: { type: sequelize.STRING, allowNull: false }
 });
 
