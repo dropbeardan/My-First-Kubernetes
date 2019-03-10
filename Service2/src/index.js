@@ -48,7 +48,7 @@ app.get('/data', async (req, res) => {
 		const service1data = await Service1.findAll({});
 		const service2data = await Service2.findAll({});
 
-		return Promise.all([service1data, service2data]).then(
+		Promise.all([service1data, service2data]).then(
 			(service1response, service2response) => {
 				res.json({
 					service1: service1response.map(response => response.dataValues),
@@ -57,7 +57,7 @@ app.get('/data', async (req, res) => {
 			}
 		);
 	} catch (err) {
-		console.log(err);
+		res.send(err);
 	}
 });
 
